@@ -52,11 +52,11 @@ kbd { background: var(--surface2); border: 1px solid rgba(255,255,255,0.15); bor
 
 /* progress + nav */
 #progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0; transition: width .25s; z-index: 50; }
-.nav { position: fixed; bottom: 18px; right: 28px; color: var(--muted); font-size: 14px; z-index: 50; user-select: none; }
+.nav { position: fixed; bottom: 18px; right: 28px; color: var(--muted); font-size: 14px; z-index: 70; user-select: none; }
 .nav b { color: var(--accent); }
 .nav .btn { cursor: pointer; padding: 6px 12px; border-radius: 8px; background: var(--surface); border: 1px solid rgba(255,255,255,0.12); margin-left: 6px; }
 .nav .btn:hover { border-color: var(--accent); color: var(--text); }
-.edge { position: fixed; top: 0; bottom: 0; width: 12vw; z-index: 40; cursor: pointer; display: flex; align-items: center; opacity: 0; transition: opacity .2s; font-size: 42px; color: var(--accent); }
+.edge { position: fixed; top: 0; bottom: 0; width: 12vw; z-index: 70; cursor: pointer; display: flex; align-items: center; opacity: 0; transition: opacity .2s; font-size: 42px; color: var(--accent); }
 .edge:hover { opacity: 0.9; }
 #prevZone { left: 0; justify-content: flex-start; padding-left: 2vw; }
 #nextZone { right: 0; justify-content: flex-end; padding-right: 2vw; }
@@ -645,6 +645,7 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
   <span class="btn" id="prevBtn">‹ Prev</span>
   <span class="btn" id="nextBtn">Next ›</span>
   <span class="btn" id="notesBtn">Notes <kbd>N</kbd></span>
+  <span class="btn" id="popBtn">Pop out <kbd>S</kbd></span>
 </div>
 
 <div id="notesPanel">
@@ -652,7 +653,7 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
     <b>Speaker Notes</b>
     <span id="npos"></span>
     <span id="timer">00:00</span>
-    <span style="margin-left:auto"><kbd>N</kbd> close · <kbd>T</kbd> reset timer</span>
+    <span style="margin-left:auto"><kbd>N</kbd> close · <kbd>S</kbd> pop out · <kbd>T</kbd> reset timer</span>
   </div>
   <div id="notesBody"></div>
 </div>
@@ -677,10 +678,62 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
     const notes = slides[i].querySelector('.notes');
     notesBody.innerHTML = notes ? notes.innerHTML : '<p>No notes for this slide.</p>';
     location.hash = 's' + (i + 1);
+    syncSpeakerView();
   }
 
   window.next = () => show(i + 1);
   window.prev = () => show(i - 1);
+
+  // ---- pop-out speaker view (second screen) ----
+  let notesWin = null;
+
+  function syncSpeakerView() {
+    if (!notesWin || notesWin.closed) return;
+    const d = notesWin.document;
+    if (!d.getElementById('pnotes')) return;
+    const cur = slides[i].querySelector('.notes');
+    const nxt = slides[i + 1] ? slides[i + 1].querySelector('.notes') : null;
+    d.getElementById('ppos').textContent = 'Slide ' + (i + 1) + ' / ' + slides.length;
+    d.getElementById('pnotes').innerHTML = cur ? cur.innerHTML : '<p>No notes for this slide.</p>';
+    d.getElementById('pnext').innerHTML = nxt ? nxt.innerHTML : '<p>End of deck.</p>';
+    d.title = 'Notes ' + (i + 1) + '/' + slides.length;
+  }
+
+  function openSpeakerView() {
+    if (notesWin && !notesWin.closed) { notesWin.focus(); return; }
+    notesWin = window.open('', 'speaker-notes', 'width=1000,height=720');
+    if (!notesWin) { alert('Popup blocked — allow popups for this page and press S again.'); return; }
+    const d = notesWin.document;
+    d.open();
+    d.write('<!doctype html><html><head><title>Speaker Notes</title><meta charset="utf-8"><style>'
+      + 'body{background:#0a0c12;color:#d5d9e3;font-family:Inter,system-ui,sans-serif;margin:0;padding:28px 36px;}'
+      + '.head{display:flex;gap:24px;align-items:baseline;border-bottom:2px solid #e8b64c;padding-bottom:12px;margin-bottom:18px;}'
+      + '.head b{color:#e8b64c;letter-spacing:2px;font-size:14px;}'
+      + '.head span{color:#8b8fa3;font-size:14px;}'
+      + '#ptimer{margin-left:auto;color:#ece7dd;font-size:18px;font-variant-numeric:tabular-nums;}'
+      + '#pnotes{font-size:24px;line-height:1.6;}'
+      + '#pnotes p{margin-bottom:.7em;color:#d5d9e3;}'
+      + '#pnotes em{color:#e8b64c;font-style:normal;font-weight:600;}'
+      + '#pnextwrap{position:fixed;left:0;right:0;bottom:0;background:#0d1018;border-top:1px solid rgba(255,255,255,.12);padding:14px 36px;max-height:30vh;overflow:hidden;}'
+      + '#pnextwrap b{color:#8b8fa3;font-size:12px;letter-spacing:2px;}'
+      + '#pnext{font-size:15px;line-height:1.5;color:#8b8fa3;margin-top:6px;}'
+      + '#pnext p{margin-bottom:.4em;color:#8b8fa3;}'
+      + '#pnext em{color:#b99b4f;font-style:normal;}'
+      + '</style></head><body>'
+      + '<div class="head"><b>SPEAKER NOTES</b><span id="ppos"></span><span id="ptimer">00:00</span></div>'
+      + '<div id="pnotes"></div>'
+      + '<div id="pnextwrap"><b>NEXT UP</b><div id="pnext"></div></div>'
+      + '<scr' + 'ipt>window.addEventListener("keydown",function(e){if(!window.opener)return;'
+      + 'if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown"){e.preventDefault();window.opener.next();}'
+      + 'if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();window.opener.prev();}});</scr' + 'ipt>'
+      + '</body></html>');
+    d.close();
+    syncSpeakerView();
+  }
+
+  window.addEventListener('beforeunload', () => {
+    if (notesWin && !notesWin.closed) notesWin.close();
+  });
 
   window.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -693,6 +746,8 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
       case 'End': e.preventDefault(); show(slides.length - 1); break;
       case 'n': case 'N':
         document.body.classList.toggle('notes-on'); break;
+      case 's': case 'S':
+        openSpeakerView(); break;
       case 't': case 'T':
         startTime = Date.now(); break;
     }
@@ -704,6 +759,7 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
   document.getElementById('prevZone').addEventListener('click', prev);
   document.getElementById('notesBtn').addEventListener('click',
     () => document.body.classList.toggle('notes-on'));
+  document.getElementById('popBtn').addEventListener('click', openSpeakerView);
 
   // touch swipe
   let tx = null, ty = null;
@@ -720,11 +776,16 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
     }
   }, { passive: true });
 
-  // speaker timer
+  // speaker timer (main panel + pop-out window)
   const timerEl = document.getElementById('timer');
   setInterval(() => {
     const s = Math.floor((Date.now() - startTime) / 1000);
-    timerEl.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    const t = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    timerEl.textContent = t;
+    if (notesWin && !notesWin.closed) {
+      const pt = notesWin.document.getElementById('ptimer');
+      if (pt) pt.textContent = t;
+    }
   }, 1000);
 
   // deep link #sN
