@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="Inter, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="mFast" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#00e5ff"/></marker>
+  </defs>
+  <rect x="220" y="28" width="200" height="64" rx="10" fill="#181c26" stroke="#e8b64c" stroke-width="2"/>
+  <text x="320" y="56" text-anchor="middle" font-size="15" font-weight="700" fill="#ece7dd">golden volume / bucket</text>
+  <text x="320" y="76" text-anchor="middle" font-size="12" fill="#8b8fa3">models + datasets</text>
+  <rect x="448" y="24" width="176" height="64" rx="10" fill="#181c26" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="536" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#ff6b6b">your home connection</text>
+  <text x="536" y="70" text-anchor="middle" font-size="11" fill="#8b8fa3">never route through here</text>
+  <line x1="422" y1="60" x2="444" y2="58" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="5 5"/>
+  <line x1="424" y1="50" x2="440" y2="66" stroke="#ff6b6b" stroke-width="3"/>
+  <line x1="440" y1="50" x2="424" y2="66" stroke="#ff6b6b" stroke-width="3"/>
+  <line x1="320" y1="92" x2="87" y2="248" stroke="#00e5ff" stroke-width="2" marker-end="url(#mFast)"/>
+  <line x1="320" y1="92" x2="242" y2="248" stroke="#00e5ff" stroke-width="2" marker-end="url(#mFast)"/>
+  <line x1="320" y1="92" x2="397" y2="248" stroke="#00e5ff" stroke-width="2" marker-end="url(#mFast)"/>
+  <line x1="320" y1="92" x2="552" y2="248" stroke="#00e5ff" stroke-width="2" marker-end="url(#mFast)"/>
+  <text x="60" y="150" font-size="13" font-weight="700" fill="#00e5ff">pulls at datacenter speed</text>
+  <text x="60" y="168" font-size="12" fill="#8b8fa3">same region only</text>
+  <rect x="20" y="252" width="135" height="60" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="87" y="279" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">GPU host 1</text>
+  <text x="87" y="297" text-anchor="middle" font-size="10" fill="#8b8fa3">rented instance</text>
+  <rect x="175" y="252" width="135" height="60" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="242" y="279" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">GPU host 2</text>
+  <text x="242" y="297" text-anchor="middle" font-size="10" fill="#8b8fa3">rented instance</text>
+  <rect x="330" y="252" width="135" height="60" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="397" y="279" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">GPU host 3</text>
+  <text x="397" y="297" text-anchor="middle" font-size="10" fill="#8b8fa3">rented instance</text>
+  <rect x="485" y="252" width="135" height="60" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="552" y="279" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">GPU host 4</text>
+  <text x="552" y="297" text-anchor="middle" font-size="10" fill="#8b8fa3">rented instance</text>
+</svg>

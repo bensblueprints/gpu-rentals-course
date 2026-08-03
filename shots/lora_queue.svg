@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="Inter, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="mA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e8b64c"/></marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#00e5ff"/></marker>
+    <marker id="mL" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b48cff"/></marker>
+    <marker id="mN" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8b8fa3"/></marker>
+  </defs>
+  <rect x="24" y="120" width="140" height="92" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="94" y="146" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">job queue</text>
+  <text x="94" y="164" text-anchor="middle" font-size="11" fill="#8b8fa3">mixed LoRA jobs</text>
+  <rect x="58" y="176" width="14" height="14" rx="2" fill="#e8b64c"/>
+  <rect x="87" y="176" width="14" height="14" rx="2" fill="#00e5ff"/>
+  <rect x="116" y="176" width="14" height="14" rx="2" fill="#b48cff"/>
+  <line x1="166" y1="166" x2="202" y2="166" stroke="#8b8fa3" stroke-width="2" marker-end="url(#mN)"/>
+  <path d="M250 124 L292 166 L250 208 L208 166 Z" fill="#181c26" stroke="#e8b64c" stroke-width="2"/>
+  <text x="250" y="171" text-anchor="middle" font-size="12" font-weight="700" fill="#ece7dd">router</text>
+  <line x1="292" y1="166" x2="424" y2="74" stroke="#e8b64c" stroke-width="2" marker-end="url(#mA)"/>
+  <line x1="292" y1="166" x2="424" y2="162" stroke="#00e5ff" stroke-width="2" marker-end="url(#mB)"/>
+  <line x1="292" y1="166" x2="424" y2="250" stroke="#b48cff" stroke-width="2" marker-end="url(#mL)"/>
+  <rect x="430" y="40" width="182" height="64" rx="10" fill="#181c26" stroke="#e8b64c" stroke-width="2"/>
+  <text x="521" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">GPU 1 · LoRA A</text>
+  <text x="521" y="86" text-anchor="middle" font-size="11" fill="#e8b64c">hot — no reloads</text>
+  <rect x="430" y="130" width="182" height="64" rx="10" fill="#181c26" stroke="#00e5ff" stroke-width="2"/>
+  <text x="521" y="156" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">GPU 2 · LoRA B</text>
+  <text x="521" y="176" text-anchor="middle" font-size="11" fill="#00e5ff">hot — no reloads</text>
+  <rect x="430" y="220" width="182" height="64" rx="10" fill="#181c26" stroke="#b48cff" stroke-width="2"/>
+  <text x="521" y="246" text-anchor="middle" font-size="14" font-weight="700" fill="#ece7dd">GPU 3 · LoRA C</text>
+  <text x="521" y="266" text-anchor="middle" font-size="11" fill="#b48cff">hot — no reloads</text>
+  <text x="624" y="342" text-anchor="end" font-size="12" font-weight="700" fill="#e8b64c">loads once, stays hot = 3× throughput</text>
+  <path d="M94 212 L94 300 L222 300" fill="none" stroke="#8b8fa3" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#mN)"/>
+  <circle cx="252" cy="300" r="14" fill="none" stroke="#8b8fa3" stroke-width="2"/>
+  <line x1="252" y1="300" x2="252" y2="291" stroke="#8b8fa3" stroke-width="2"/>
+  <line x1="252" y1="300" x2="259" y2="303" stroke="#8b8fa3" stroke-width="2"/>
+  <text x="278" y="294" font-size="12" fill="#8b8fa3">naive round-robin:</text>
+  <text x="278" y="310" font-size="12" fill="#ff6b6b">30-60s reload every job</text>
+</svg>

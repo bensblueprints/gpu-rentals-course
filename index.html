@@ -45,6 +45,10 @@ td:first-child { color: var(--text); font-weight: 600; }
 .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 1000px; margin-top: 10px; }
 .shots img { width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
 .cap { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.fig { margin: 16px 0; }
+.fig img { width: 100%; max-width: 560px; display: block; }
+.cols { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 28px; align-items: center; max-width: 1150px; }
+@media (max-width: 800px) { .cols { grid-template-columns: 1fr; } }
 code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; color: var(--accent2); font-size: 0.92em; }
 pre { background: #07080d; border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; padding: 16px 20px; max-width: 980px; margin: 10px 0; overflow-x: auto; }
 pre code { color: #c8d3e0; font-size: clamp(11px, 1.05vw, 15px); line-height: 1.5; }
@@ -120,6 +124,7 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Foundations</div>
   <h2>Three memories. Three speeds.<br>Confuse them and you waste money.</h2>
+  <figure class="fig" style="max-width:640px"><img src="shots/mem_hierarchy.svg" alt="Diagram of the three-tier memory hierarchy: fast VRAM where work happens on top, RAM staging in the middle, and large slow NVMe cold storage at the bottom."></figure>
   <div class="grid3">
     <div class="card"><h3>VRAM <span class="accent">(on the GPU)</span></h3><p>The GPU's private workspace. <b>Everything that matters happens here.</b> If your model doesn't fit in VRAM, it crawls or dies. This is the number you shop by: 16GB, 24GB, 32GB, 80GB.</p></div>
     <div class="card"><h3>RAM <span class="accent">(system)</span></h3><p>Staging area. Holds the dataset, the OS, and models while they load into VRAM. <b>You need 2× your VRAM in RAM</b> — cheap, so don't skimp.</p></div>
@@ -137,12 +142,15 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Foundations</div>
   <h2>VRAM is a bouncer, not a speedometer</h2>
+  <div class="cols">
   <ul>
     <li><b>Model weights must fit.</b> An 8B LLM ≈ 5GB. A 14B ≈ 10GB (quantized). SDXL + LoRA ≈ 12GB. Video models ≈ 24-40GB.</li>
     <li><b>Speed comes from bandwidth, not size.</b> A 5090 (32GB, 1,800 GB/s) beats an A100 80GB (1,600 GB/s) at image work — even though it's "smaller."</li>
     <li><b>Too little VRAM = offloading.</b> The GPU shuffles data from RAM every step. <b>5× slower.</b> This is why a 16GB card can't run a 32B LLM properly.</li>
     <li><b>KV cache eats VRAM on LLMs.</b> Long conversations need room beyond the model weights. A 24GB card = 14B model + comfortable cache.</li>
   </ul>
+  <figure class="fig"><img src="shots/bouncer.svg" alt="Diagram of VRAM as a club bouncer: a 10GB 14B model is waved through the door while a 24GB-plus 32B model with cache is turned away to five-times-slower RAM offload."></figure>
+  </div>
   <aside class="notes">
     <p>The bouncer line lands well: <em>VRAM doesn't decide how fast the party is — it decides who gets in.</em> If the model doesn't fit, nothing else about the card matters.</p>
     <p>Walk the 5090-vs-A100 example slowly. Everyone assumes "80GB datacenter card beats 32GB consumer card." For a 12GB image workload, the A100's extra 68GB sits empty while its lower bandwidth loses the race. Bigger ≠ faster.</p>
@@ -154,12 +162,15 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Foundations</div>
   <h2>Quantization: how a 14B model fits in 10GB</h2>
+  <div class="cols">
   <ul>
     <li><b>Weights are stored as numbers.</b> 16-bit (FP16): 14B params ≈ 28GB. 8-bit: ~14GB. 4-bit (AWQ/GPTQ): <b>~10GB</b>.</li>
     <li><b>4-bit is the sweet spot for serving.</b> Quality loss on story/chat workloads is small; the VRAM savings decide which card you rent.</li>
     <li><b>Below 4-bit, quality falls off a cliff</b> for nuance-heavy writing. Test before you ship on 3-bit.</li>
     <li><b>KV cache is the hidden second tenant.</b> Every active conversation keeps its context in VRAM. 20 concurrent players × long chats can eat as much as the model itself.</li>
   </ul>
+  <figure class="fig"><img src="shots/quant_bars.svg" alt="Bar chart of a 14B model at three precisions: FP16 at 28GB crosses the 24GB card line, while INT8 at 14GB and 4-bit AWQ at 10GB both fit with a check mark."></figure>
+  </div>
   <p style="margin-top:16px">Shopping rule: <b>model GB + cache headroom ≤ VRAM.</b> That inequality picks your card.</p>
   <aside class="notes">
     <p>Analogy: quantization is <em>compressing a photo from RAW to JPEG</em>. At 4-bit you're at "high-quality JPEG" — nobody playing a text game can tell. At 2-bit you're deep-fried.</p>
@@ -212,12 +223,15 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">The Hidden Bottleneck</div>
   <h2>Transfer speed kills more jobs<br>than weak GPUs ever will</h2>
+  <div class="cols">
   <ul>
     <li><b>Network varies 100× between hosts.</b> I've seen 60 Mbps and 6,783 Mbps on the same platform. A 53GB transfer is 2 minutes on one and <span class="accent">2 hours on the other.</span></li>
     <li><b>Region matters for inter-instance transfers.</b> Cross-continent = 1 MB/s. Same region = 50+ MB/s. Move data host-to-host, never through your home connection.</li>
     <li><b>PCIe barely matters for inference.</b> x8 vs x16? Invisible for image gen. Matters for multi-GPU training only.</li>
     <li><b>Check before you rent:</b> network Mbps, reliability %, region. Not just the GPU name.</li>
   </ul>
+  <figure class="fig"><img src="shots/network_100x.svg" alt="Two identical hosts at the same price where the same 53GB transfer takes two minutes on one and two hours on the other because network speed varies 100x."></figure>
+  </div>
   <aside class="notes">
     <p>Story to tell: <em>the 53GB dataset story is real.</em> Same platform, two hosts, same price — one finished the transfer in 2 minutes, the other quoted 2 hours. The GPU was identical. The job died on the wire, not the silicon.</p>
     <p>The home-connection trap: people download 50GB to their laptop "to be safe," then upload it to the next host. Your home uplink turns a 2-minute job into a weekend. Host-to-host, always.</p>
@@ -229,6 +243,7 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">The Hidden Bottleneck</div>
   <h2>The data movement playbook</h2>
+  <figure class="fig" style="max-width:640px"><img src="shots/data_hub.svg" alt="A golden storage bucket of models and datasets feeding four GPU hosts at datacenter speed, with the slow path through a home laptop connection crossed out in red."></figure>
   <div class="grid2">
     <div class="card"><h3>Rule 1: data lives near compute</h3><p>Pick the host's region <b>first</b>, then the GPU. Your dataset's region is your region. Cross-continent transfers are a tax on every job.</p></div>
     <div class="card"><h3>Rule 2: seed once, reuse everywhere</h3><p>Keep a "golden" storage volume or cloud bucket with models + datasets. New hosts pull from it at datacenter speed — not from your house.</p></div>
@@ -307,12 +322,15 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Use Case · LLMs</div>
   <h2>Running LLMs: vLLM changes everything</h2>
+  <div class="cols">
   <ul>
     <li><b>8B model</b> (Llama 3.1): fits a 16GB card. Fine for dev, weak for production stories.</li>
     <li><b>14B 4-bit</b> (Qwen 2.5 AWQ): ~10GB. <b>The price-performance king</b> — a 3090 at $0.25/hr serves hundreds of concurrent players.</li>
     <li><b>32B 4-bit</b>: ~20GB. Needs a 32GB card. Marginal quality gain over 14B in games.</li>
     <li><b>vLLM batches requests</b> — one 3090 handles 20-40 simultaneous users before anyone notices. Your card is mostly idle waiting for reads.</li>
   </ul>
+  <figure class="fig"><img src="shots/vllm_batch.svg" alt="Comparison of a GPU sitting idle between single requests versus vLLM continuous batching packing 20-40 concurrent users onto one fully busy 3090."></figure>
+  </div>
   <p class="big" style="margin-top:16px">Real math: <span class="accent">$0.25/hr</span> serves <span class="accent">1,000+ active players</span>.</p>
   <aside class="notes">
     <p>Explain why batching is magic: <em>without vLLM, each request runs alone and the GPU idles between tokens.</em> With continuous batching, vLLM interleaves 20-40 requests through the same weights — throughput goes up 10×+ on the same card.</p>
@@ -325,6 +343,7 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Use Case · LLMs</div>
   <h2>Worked example: sizing a story-game server</h2>
+  <div class="cols">
   <table>
     <tr><th>Line item</th><th>VRAM cost</th><th>Why</th></tr>
     <tr><td>Qwen 2.5 14B, AWQ 4-bit</td><td>~10GB</td><td>The model weights</td></tr>
@@ -333,6 +352,8 @@ body.notes-on #notesPanel { display: block; }
     <tr><td>Safety margin</td><td>~4GB</td><td>Spikes, long sessions, future model bumps</td></tr>
     <tr><td><b>Total</b></td><td><b>~20GB → 24GB card</b></td><td>A 3090/4090 at $0.25-0.45/hr</td></tr>
   </table>
+  <figure class="fig"><img src="shots/vram_budget.svg" alt="Stacked 24GB VRAM budget bar: 10GB weights, 4GB KV cache, 2GB engine, and a 4GB safety margin that prevents OOM at 100 users."></figure>
+  </div>
   <p style="margin-top:16px">The pattern: <b>weights + (players × context) + engine + margin.</b> Size the card from the workload, never from the model name.</p>
   <aside class="notes">
     <p>Walk the table line by line — this is the applied version of the KV-cache slide. <em>The model is only half the bill.</em> People who size for "10GB model → 16GB card" discover the other half at 100 concurrent users.</p>
@@ -345,14 +366,17 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Use Case · Images</div>
   <h2>Image generation: scale out, not up</h2>
+  <div class="cols">
   <ul>
     <li>SDXL 1024px + LoRA ≈ <b>12GB per worker</b>. Any 16GB+ card works.</li>
     <li>One 5090: ~1,400 scenes/hour. One 3080: ~700. One 4090: ~900.</li>
     <li><b>8× 4090 beats 1× H100 for batch generation</b> — and costs less per image.</li>
     <li>Batch smart: group jobs by LoRA so the model stays hot (my fleet went <b>3× faster</b> with this one trick).</li>
   </ul>
+  <figure class="fig"><img src="shots/fleet_vs_big.svg" alt="Eight 4090 cards matching one H100's output at a fraction of the cost, showing batch image generation scales out rather than up."></figure>
+  </div>
   <p style="margin-top:14px">Real numbers: <b>30,000 scenes in 5 hours for ~$27.</b></p>
-  <img class="shot" src="shots/gallery.png" alt="Scene generation gallery">
+  <img class="shot" src="shots/gallery.png" alt="Scene generation gallery" style="max-height:190px; width:auto; max-width:520px">
   <div class="cap">The actual scene pipeline mid-run — thousands of character-consistent scenes generated on an 8-GPU fleet.</div>
   <aside class="notes">
     <p>Do the $27 math out loud: <em>30,000 images ÷ $27 = $0.0009 per image.</em> Then ask what a stock photo or a subscription credit costs. The room does the rest.</p>
@@ -365,12 +389,15 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Use Case · Images</div>
   <h2>Fleet design: the LoRA-hot queue</h2>
+  <div class="cols">
   <ul>
     <li><b>The problem:</b> loading SDXL + a LoRA takes 30-60s. Naive round-robin reloads models constantly — your fleet spends its life loading, not generating.</li>
     <li><b>The fix:</b> pin jobs to workers by model. Worker 3 runs <i>character A</i> jobs all night. The model loads once, stays hot, generates back-to-back.</li>
     <li><b>The queue:</b> one folder/database of pending jobs per game. Workers pull the next job <i>matching their loaded LoRA</i>, write output + metadata, mark done.</li>
     <li><b>The result:</b> 3× throughput on identical hardware. Zero new spend — just routing.</li>
   </ul>
+  <figure class="fig"><img src="shots/lora_queue.svg" alt="A mixed job queue routed to three GPUs each pinned to a hot LoRA with no reloads, contrasted with naive round-robin paying a 30-60 second reload every job."></figure>
+  </div>
   <p style="margin-top:16px">Architecture in one line: <b>one worker per GPU, one LoRA per worker, one queue per game.</b></p>
   <aside class="notes">
     <p>This is the highest-ROI slide in the deck for anyone doing batch images. <em>Same cards, same models, 3× output</em> — purely from not reloading weights.</p>
@@ -383,12 +410,15 @@ body.notes-on #notesPanel { display: block; }
 <div class="slide">
   <div class="kicker">Use Case · Training</div>
   <h2>Training LoRAs: VRAM is the wall</h2>
+  <div class="cols">
   <ul>
     <li>SDXL LoRA training: <b>24GB works, 40GB is comfortable, 80GB is luxurious.</b></li>
     <li>8× A100 40GB trained 246 character LoRAs at ~21 min each, <b>16/hour across the fleet.</b></li>
     <li>Consumer cards (3090/4090) train fine at 24GB — just slower per job.</li>
     <li><b>Training is a burst job.</b> Rent big, finish, destroy. Never own training hardware unless you train weekly.</li>
   </ul>
+  <figure class="fig"><img src="shots/train_vram.svg" alt="Stacked bar showing why training needs more VRAM than inference: model plus optimizer states plus gradients plus activations pushing past the 40GB comfort line."></figure>
+  </div>
   <aside class="notes">
     <p>Why training eats VRAM when inference doesn't: <em>training holds the model + optimizer states + gradients + the batch, all at once.</em> Optimizer states alone can be 2× the model size. That's why the same SDXL that serves in 12GB wants 24-40GB to train.</p>
     <p>The 246-LoRA run is the proof of the fleet pattern: no single A100 is fast — 21 min per LoRA — but eight of them in parallel is a factory. Total wall-clock for 246 models: about 15 hours, not 86.</p>
@@ -497,12 +527,15 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
 <div class="slide">
   <div class="kicker">Operations</div>
   <h2>Hosts die. Plan for it.</h2>
+  <div class="cols">
   <ul>
     <li><b>Reliability % is the most important number on the listing.</b> 93% means your 8-hour job dies at hour 5. 99.9% costs 10% more and saves the whole job.</li>
     <li><b>Kill-and-retry is a feature, not a failure.</b> Every long job I run is resumable by design. New host, rerun the script, it skips finished work.</li>
     <li><b>Provisioning hangs happen.</b> If a template download stalls 30+ minutes, kill the download process — provisioning usually completes anyway.</li>
     <li><b>Some hosts can't reach HuggingFace.</b> Test on arrival: <code>curl huggingface.co</code>. No reach? Move the data from a host that can.</li>
   </ul>
+  <figure class="fig"><img src="shots/uptime_curve.svg" alt="Line chart of job survival over eight hours: a 99.9 percent reliable host stays nearly flat while a 93 percent host sags to about 55 percent with a typical death near hour five."></figure>
+  </div>
   <aside class="notes">
     <p>Make reliability % concrete: <em>93% sounds like an A-minus. It's not — it's a coin flip on whether tonight's job finishes.</em> Uptime compounds across hours and across an 8-host fleet: one weak host drags the whole fleet's effective uptime.</p>
     <p>"Kill-and-retry is a feature": flip the emotional framing. On community cloud, a dead host isn't bad luck — it's the expected tax, already priced into the 2-3× discount. Resumability means you pay it in minutes.</p>
@@ -514,6 +547,7 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
 <div class="slide">
   <div class="kicker">The Money</div>
   <h2>When to rent, when to buy</h2>
+  <div class="cols">
   <table>
     <tr><th>Rule</th><th>Decision</th></tr>
     <tr><td>Breakeven on a 5090 ($2,500)</td><td><b>~6 months of 24/7 rental.</b> Under that → rent. Over → buy.</td></tr>
@@ -521,6 +555,8 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
     <tr><td>Always-on production (your game server)</td><td><b>Buy when revenue covers it.</b> One 5090 at home beats $1,000/month rent.</td></tr>
     <tr><td>Unproven ideas</td><td><b>Always rent.</b> Prove it earns before you own it.</td></tr>
   </table>
+  <figure class="fig"><img src="shots/breakeven.svg" alt="Cumulative cost chart of renting at about 450 dollars a month rising linearly versus a flat 2,500 dollar purchase line, crossing at a breakeven near six months."></figure>
+  </div>
   <p style="margin-top:18px">My rule: <b>rent until the workload is permanent, predictable, and profitable.</b> Then buy exactly one card for it.</p>
   <aside class="notes">
     <p>Walk the breakeven math: <em>a 5090 rents around $0.50-0.90/hr. 24/7 that's $360-650/month — call it 4-7 months to equal the $2,500 purchase.</em> Any job shorter than that: rent. Any workload running 24/7 forever: buy.</p>
@@ -552,12 +588,15 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
 <div class="slide">
   <div class="kicker">Asset Discipline</div>
   <h2>What you keep forever<br>(it's never the hardware)</h2>
+  <div class="cols">
   <ul>
     <li><b>Models and LoRAs</b> — your trained assets. Three copies: local, NAS, cloud. Hardware dies; these are the business.</li>
     <li><b>Pipelines as code</b> — every script, every config, every watchdog. Rebuild any host in an hour.</li>
     <li><b>Metadata</b> — which prompt made which image. Regeneration without it means starting over.</li>
     <li><b>Nothing on the instance.</b> Treat every host as temporary. If it matters, it's synced off within 60 seconds.</li>
   </ul>
+  <figure class="fig"><img src="shots/asset_flow.svg" alt="A dashed temporary rented instance syncing every 60 seconds to three permanent copies: local, NAS, and cloud storage of models, LoRAs, pipeline code, and metadata."></figure>
+  </div>
   <aside class="notes">
     <p>The mental model: <em>you're not renting computers, you're renting electricity with a return policy.</em> Everything that outlives the rental must leave the machine.</p>
     <p>Metadata is the one people skip and regret: 30,000 images without the prompt/seed/LoRA that made them is 30,000 orphans. Store it next to every output, every time.</p>

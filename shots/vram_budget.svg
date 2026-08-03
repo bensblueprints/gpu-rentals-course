@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="Inter, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="mR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff6b6b"/></marker>
+  </defs>
+  <text x="40" y="34" font-size="11" font-weight="700" letter-spacing="2" fill="#8b8fa3">VRAM BUDGET — 24GB CARD (3090 / 4090)</text>
+  <line x1="230" y1="40" x2="410" y2="40" stroke="#ece7dd" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="420" y="45" font-size="13" font-weight="700" fill="#ece7dd">24GB capacity</text>
+  <rect x="270" y="86" width="90" height="47" rx="4" fill="rgba(255,107,107,0.07)" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="5 4"/>
+  <rect x="270" y="133" width="90" height="23" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <rect x="270" y="156" width="90" height="47" rx="4" fill="rgba(0,229,255,0.15)" stroke="#00e5ff" stroke-width="2"/>
+  <rect x="270" y="203" width="90" height="117" rx="4" fill="rgba(232,182,76,0.22)" stroke="#e8b64c" stroke-width="2"/>
+  <line x1="258" y1="110" x2="266" y2="110" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <text x="252" y="114" text-anchor="end" font-size="13" font-weight="700" fill="#ff6b6b">safety margin — 4GB</text>
+  <line x1="258" y1="144" x2="266" y2="144" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <text x="252" y="148" text-anchor="end" font-size="13" fill="#8b8fa3">engine — 2GB</text>
+  <line x1="258" y1="180" x2="266" y2="180" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <text x="252" y="184" text-anchor="end" font-size="13" fill="#00e5ff">KV cache — 4GB</text>
+  <line x1="258" y1="262" x2="266" y2="262" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <text x="252" y="266" text-anchor="end" font-size="13" font-weight="700" fill="#e8b64c">weights — 10GB</text>
+  <text x="315" y="344" text-anchor="middle" font-size="12" fill="#8b8fa3">~20GB used of 24GB</text>
+  <text x="394" y="96" font-size="13" font-weight="700" fill="#ff6b6b">skip the margin →</text>
+  <text x="394" y="114" font-size="13" font-weight="700" fill="#ff6b6b">OOM at 100 users</text>
+  <line x1="388" y1="105" x2="366" y2="108" stroke="#ff6b6b" stroke-width="2" marker-end="url(#mR)"/>
+</svg>

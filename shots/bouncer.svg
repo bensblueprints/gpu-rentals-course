@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="Inter, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="mOk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#6bffa3"/></marker>
+    <marker id="mNo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff6b6b"/></marker>
+  </defs>
+  <text x="345" y="52" text-anchor="middle" font-size="17" font-weight="700" fill="#e8b64c">VRAM 24GB</text>
+  <rect x="300" y="70" width="90" height="190" rx="10" fill="#181c26" stroke="#e8b64c" stroke-width="2"/>
+  <line x1="345" y1="70" x2="345" y2="260" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <!-- bouncer -->
+  <circle cx="262" cy="104" r="13" fill="none" stroke="#ece7dd" stroke-width="2"/>
+  <line x1="262" y1="117" x2="262" y2="162" stroke="#ece7dd" stroke-width="2"/>
+  <line x1="242" y1="136" x2="282" y2="136" stroke="#ece7dd" stroke-width="2"/>
+  <line x1="262" y1="162" x2="248" y2="196" stroke="#ece7dd" stroke-width="2"/>
+  <line x1="262" y1="162" x2="276" y2="196" stroke="#ece7dd" stroke-width="2"/>
+  <!-- accepted -->
+  <rect x="28" y="92" width="176" height="66" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="44" y="120" font-size="15" font-weight="700" fill="#ece7dd">14B model</text>
+  <text x="44" y="142" font-size="12" fill="#8b8fa3">10GB — fits</text>
+  <line x1="204" y1="125" x2="294" y2="125" stroke="#6bffa3" stroke-width="2" marker-end="url(#mOk)"/>
+  <circle cx="248" cy="104" r="11" fill="#181c26" stroke="#6bffa3" stroke-width="2"/>
+  <polyline points="242,104 246,109 254,99" fill="none" stroke="#6bffa3" stroke-width="2.5"/>
+  <!-- rejected -->
+  <rect x="28" y="212" width="176" height="66" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="44" y="240" font-size="15" font-weight="700" fill="#ece7dd">32B + cache</text>
+  <text x="44" y="262" font-size="12" fill="#8b8fa3">24GB+ — too big</text>
+  <line x1="182" y1="233" x2="200" y2="251" stroke="#ff6b6b" stroke-width="3"/>
+  <line x1="200" y1="233" x2="182" y2="251" stroke="#ff6b6b" stroke-width="3"/>
+  <path d="M116 278 L116 318 L292 318" fill="none" stroke="#ff6b6b" stroke-width="2" marker-end="url(#mNo)"/>
+  <rect x="300" y="296" width="312" height="46" rx="10" fill="#181c26" stroke="#ff6b6b" stroke-width="2"/>
+  <text x="318" y="325" font-size="14" font-weight="700" fill="#ff6b6b">offload to RAM = 5× slower</text>
+</svg>

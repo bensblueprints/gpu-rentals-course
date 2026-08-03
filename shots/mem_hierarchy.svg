@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="Inter, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="mUp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e8b64c"/></marker>
+    <marker id="mDn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8b8fa3"/></marker>
+  </defs>
+  <line x1="52" y1="292" x2="52" y2="66" stroke="#e8b64c" stroke-width="2" marker-end="url(#mUp)"/>
+  <text x="30" y="180" transform="rotate(-90 30 180)" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="2" fill="#e8b64c">FASTER</text>
+  <line x1="100" y1="66" x2="100" y2="292" stroke="#8b8fa3" stroke-width="2" marker-end="url(#mDn)"/>
+  <text x="118" y="180" transform="rotate(-90 118 180)" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="2" fill="#8b8fa3">BIGGER + CHEAPER</text>
+  <rect x="132" y="56" width="300" height="76" rx="10" fill="#181c26" stroke="#e8b64c" stroke-width="2"/>
+  <text x="152" y="88" font-size="17" font-weight="700" fill="#ece7dd">VRAM (on GPU)</text>
+  <text x="152" y="112" font-size="13" fill="#8b8fa3">where the work happens — ~1-2 TB/s</text>
+  <rect x="132" y="142" width="400" height="76" rx="10" fill="#181c26" stroke="#00e5ff" stroke-width="2"/>
+  <text x="152" y="174" font-size="17" font-weight="700" fill="#ece7dd">RAM (system)</text>
+  <text x="152" y="198" font-size="13" fill="#8b8fa3">staging area — ~50 GB/s</text>
+  <rect x="132" y="228" width="496" height="76" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="152" y="260" font-size="17" font-weight="700" fill="#ece7dd">NVMe (disk)</text>
+  <text x="152" y="284" font-size="13" fill="#8b8fa3">cold storage — ~3 GB/s</text>
+</svg>

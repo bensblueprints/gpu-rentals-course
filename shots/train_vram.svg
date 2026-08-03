@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="Inter, 'Segoe UI', sans-serif">
+  <text x="60" y="34" font-size="11" font-weight="700" letter-spacing="2" fill="#8b8fa3">WHY TRAINING EATS VRAM — ONE SDXL LORA RUN</text>
+  <text x="446" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#ece7dd">40GB = comfy</text>
+  <line x1="446" y1="66" x2="446" y2="212" stroke="#ece7dd" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="600" y="108" text-anchor="end" font-size="12" fill="#8b8fa3">≈ 56GB peak</text>
+  <rect x="60" y="120" width="116" height="64" rx="3" fill="rgba(232,182,76,0.22)" stroke="#e8b64c" stroke-width="2"/>
+  <text x="118" y="157" text-anchor="middle" font-size="13" font-weight="700" fill="#ece7dd">model 12GB</text>
+  <rect x="176" y="120" width="231" height="64" rx="3" fill="rgba(0,229,255,0.15)" stroke="#00e5ff" stroke-width="2"/>
+  <text x="291" y="157" text-anchor="middle" font-size="13" font-weight="700" fill="#ece7dd">optimizer states 24GB</text>
+  <rect x="407" y="120" width="116" height="64" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="465" y="157" text-anchor="middle" font-size="13" fill="#ece7dd">gradients 12GB</text>
+  <rect x="523" y="120" width="77" height="64" rx="3" fill="rgba(255,255,255,0.03)" stroke="#8b8fa3" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="561" y="157" text-anchor="middle" font-size="11" fill="#8b8fa3">batch + act.</text>
+  <line x1="60" y1="202" x2="176" y2="202" stroke="#e8b64c" stroke-width="2"/>
+  <line x1="60" y1="202" x2="60" y2="194" stroke="#e8b64c" stroke-width="2"/>
+  <line x1="176" y1="202" x2="176" y2="194" stroke="#e8b64c" stroke-width="2"/>
+  <text x="118" y="226" text-anchor="middle" font-size="13" font-weight="700" fill="#e8b64c">inference only needs this segment</text>
+  <text x="446" y="238" text-anchor="middle" font-size="12" fill="#8b8fa3">24GB trains, barely — 40GB is comfortable</text>
+  <text x="60" y="280" font-size="13" fill="#8b8fa3">training holds model + optimizer + gradients + batch in VRAM at the same time</text>
+</svg>

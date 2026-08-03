@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" font-family="Inter, 'Segoe UI', sans-serif">
+  <text x="320" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="#ece7dd">Same GPU, same price — network varies 100× between hosts</text>
+  <rect x="60" y="80" width="180" height="80" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="76" y="112" font-size="15" font-weight="700" fill="#ece7dd">HOST A</text>
+  <text x="76" y="134" font-size="11" fill="#8b8fa3">same GPU · same price</text>
+  <line x1="240" y1="120" x2="268" y2="120" stroke="#00e5ff" stroke-width="8"/>
+  <rect x="268" y="102" width="120" height="36" rx="8" fill="rgba(232,182,76,0.25)" stroke="#e8b64c" stroke-width="2"/>
+  <text x="280" y="126" font-size="13" font-weight="700" fill="#ece7dd">53GB</text>
+  <text x="398" y="126" font-size="15" font-weight="700" fill="#e8b64c">→ 2 minutes</text>
+  <rect x="60" y="220" width="180" height="80" rx="10" fill="#181c26" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+  <text x="76" y="252" font-size="15" font-weight="700" fill="#ece7dd">HOST B</text>
+  <text x="76" y="274" font-size="11" fill="#8b8fa3">same GPU · same price</text>
+  <line x1="240" y1="260" x2="268" y2="260" stroke="#ff6b6b" stroke-width="3"/>
+  <rect x="268" y="242" width="330" height="36" rx="8" fill="rgba(255,107,107,0.15)" stroke="#ff6b6b" stroke-width="2"/>
+  <text x="280" y="266" font-size="13" font-weight="700" fill="#ece7dd">53GB</text>
+  <text x="588" y="266" text-anchor="end" font-size="15" font-weight="700" fill="#ff6b6b">→ 2 hours</text>
+  <text x="320" y="336" text-anchor="middle" font-size="13" fill="#8b8fa3">bar length = time to transfer your model + dataset on arrival</text>
+</svg>
