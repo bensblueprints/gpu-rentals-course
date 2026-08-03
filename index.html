@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Right GPU for the Job — GPU Rentals That Actually Make Money</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c12; --surface: #12151d; --surface2: #181c26;
+  --text: #ece7dd; --muted: #8b8fa3; --accent: #e8b64c; --accent2: #00e5ff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; }
+.slide {
+  display: none; height: 100vh; width: 100vw; padding: 7vh 8vw;
+  flex-direction: column; justify-content: center;
+}
+.slide.active { display: flex; }
+h1 { font-family: 'Fraunces', serif; font-size: clamp(38px, 5.5vw, 72px); line-height: 1.05; letter-spacing: -1px; margin-bottom: 24px; }
+h2 { font-family: 'Fraunces', serif; font-size: clamp(30px, 3.6vw, 48px); line-height: 1.1; margin-bottom: 32px; color: var(--accent); }
+p, li { font-size: clamp(16px, 1.5vw, 21px); line-height: 1.6; color: var(--muted); max-width: 68ch; }
+ul { padding-left: 1.2em; }
+li { margin-bottom: 0.55em; }
+strong, b { color: var(--text); }
+.accent { color: var(--accent); }
+.cyan { color: var(--accent2); }
+.big { font-size: clamp(26px, 3vw, 40px); color: var(--text); line-height: 1.35; }
+.kicker { font-size: 14px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+table { border-collapse: collapse; width: 100%; max-width: 1000px; margin-top: 10px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: clamp(13px, 1.25vw, 17px); }
+th { color: var(--accent); font-weight: 700; }
+td { color: var(--muted); }
+td:first-child { color: var(--text); font-weight: 600; }
+.card { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 22px 26px; margin: 10px 0; max-width: 900px; }
+.card h3 { color: var(--text); margin-bottom: 8px; font-size: clamp(17px, 1.6vw, 22px); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1000px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; max-width: 1100px; }
+.nav { position: fixed; bottom: 24px; right: 32px; color: var(--muted); font-size: 14px; }
+.nav b { color: var(--accent); }
+.shot { max-width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 12px 40px rgba(0,0,0,0.5); margin: 14px 0; }
+.shots { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 1000px; margin-top: 10px; }
+.shots img { width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+.cap { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.num { font-family: 'Fraunces', serif; font-size: clamp(40px, 5vw, 64px); color: var(--accent); line-height: 1; }
+@media (max-width: 800px) {
+  .slide { padding: 5vh 6vw; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- 1. TITLE -->
+<div class="slide active">
+  <div class="kicker">GPU Rentals, Done Right</div>
+  <h1>The Right GPU<br>for the Job</h1>
+  <p class="big">How to spend <span class="accent">hundreds</span> instead of <span class="accent">thousands</span> — and get more done than the people who bought the hardware.</p>
+  <p style="margin-top:24px">A field guide from someone who ran 8-GPU fleets, trained 246 custom models, and learned every lesson the hard way.</p>
+  <img class="shot" src="shots/home.png" alt="NightTale game" style="max-width:640px">
+  <div class="cap">Built entirely on rented GPUs: 15 games, 246 custom character models, 30k+ scenes — for less than the cost of one 5090.</div>
+</div>
+
+<!-- 2. THE THREE MEMORIES -->
+<div class="slide">
+  <div class="kicker">Foundations</div>
+  <h2>Three memories. Three speeds.<br>Confuse them and you waste money.</h2>
+  <div class="grid3">
+    <div class="card"><h3>VRAM <span class="accent">(on the GPU)</span></h3><p>The GPU's private workspace. <b>Everything that matters happens here.</b> If your model doesn't fit in VRAM, it crawls or dies. This is the number you shop by: 16GB, 24GB, 32GB, 80GB.</p></div>
+    <div class="card"><h3>RAM <span class="accent">(system)</span></h3><p>Staging area. Holds the dataset, the OS, and models while they load into VRAM. <b>You need 2× your VRAM in RAM</b> — cheap, so don't skimp.</p></div>
+    <div class="card"><h3>Disk <span class="accent">(NVMe)</span></h3><p>Cold storage for models and output. A 7GB model loads at ~1-3 GB/s on NVMe. <b>Slow disk = 2-minute startup</b> every time the model reloads.</p></div>
+  </div>
+  <p style="margin-top:20px">Rule of thumb: <b>VRAM decides if it works. Bandwidth decides how fast. Disk decides how often you wait.</b></p>
+</div>
+
+<!-- 3. WHAT VRAM ACTUALLY DOES -->
+<div class="slide">
+  <div class="kicker">Foundations</div>
+  <h2>VRAM is a bouncer, not a speedometer</h2>
+  <ul>
+    <li><b>Model weights must fit.</b> An 8B LLM ≈ 5GB. A 14B ≈ 10GB (quantized). SDXL + LoRA ≈ 12GB. Video models ≈ 24-40GB.</li>
+    <li><b>Speed comes from bandwidth, not size.</b> A 5090 (32GB, 1,800 GB/s) beats an A100 80GB (1,600 GB/s) at image work — even though it's "smaller."</li>
+    <li><b>Too little VRAM = offloading.</b> The GPU shuffles data from RAM every step. 5× slower. This is why a 16GB card can't run a 32B LLM properly.</li>
+    <li><b>KV cache eats VRAM on LLMs.</b> Long conversations need room beyond the model weights. 24GB card = 14B model + comfortable cache.</li>
+  </ul>
+</div>
+
+<!-- 4. TRANSFER SPEED -->
+<div class="slide">
+  <div class="kicker">The Hidden Bottleneck</div>
+  <h2>Transfer speed kills more jobs<br>than weak GPUs ever will</h2>
+  <ul>
+    <li><b>Network varies 100× between hosts.</b> I've seen 60 Mbps and 6,783 Mbps on the same platform. A 53GB transfer is 2 minutes on one and <span class="accent">2 hours on the other.</span></li>
+    <li><b>Region matters for inter-instance transfers.</b> Cross-continent = 1 MB/s. Same region = 50+ MB/s. Move data host-to-host, never through your home connection.</li>
+    <li><b>PCIe barely matters for inference.</b> x8 vs x16? Invisible for image gen. Matters for multi-GPU training only.</li>
+    <li><b>Check before you rent:</b> network Mbps, reliability %, region. Not just the GPU name.</li>
+  </ul>
+</div>
+
+<!-- 5. DECISION MATRIX -->
+<div class="slide">
+  <div class="kicker">The Cheat Sheet</div>
+  <h2>What you need for what</h2>
+  <table>
+    <tr><th>Job</th><th>Minimum</th><th>Sweet spot</th><th>Speed driver</th></tr>
+    <tr><td>LLM chat / story text</td><td>16GB (8B)</td><td>24GB (14B 4-bit)</td><td>Memory bandwidth</td></tr>
+    <tr><td>Image generation (SDXL)</td><td>16GB</td><td>24-32GB</td><td>GPU cores + more cards</td></tr>
+    <tr><td>LoRA training</td><td>24GB</td><td>40-80GB</td><td>VRAM size</td></tr>
+    <tr><td>Video generation</td><td>24GB</td><td>32-80GB</td><td>VRAM + architecture</td></tr>
+    <tr><td>TTS / voice cloning</td><td>8GB (CPU ok)</td><td>16GB</td><td>Small models, cheap</td></tr>
+  </table>
+  <p style="margin-top:20px">Golden rule: <b>for batch work, 8 cheap cards beat 1 expensive card.</b></p>
+</div>
+
+<!-- 6. LLMs -->
+<div class="slide">
+  <div class="kicker">Use Case</div>
+  <h2>Running LLMs: vLLM changes everything</h2>
+  <ul>
+    <li><b>8B model</b> (Llama 3.1): fits a 16GB card. Fine for dev, weak for production stories.</li>
+    <li><b>14B 4-bit</b> (Qwen 2.5 AWQ): ~10GB. <b>The price-performance king</b> — a 3090 at $0.25/hr serves hundreds of concurrent players.</li>
+    <li><b>32B 4-bit</b>: ~20GB. Needs 32GB card. Marginal quality gain over 14B in games.</li>
+    <li><b>vLLM batches requests</b> — one 3090 handles 20-40 simultaneous users before anyone notices. Your card is mostly idle waiting for reads.</li>
+  </ul>
+  <p class="big" style="margin-top:16px">Real math: <span class="accent">$0.25/hr</span> serves <span class="accent">1,000+ active players</span>.</p>
+</div>
+
+<!-- 7. IMAGES -->
+<div class="slide">
+  <div class="kicker">Use Case</div>
+  <h2>Image generation: scale out, not up</h2>
+  <ul>
+    <li>SDXL 1024px + LoRA ≈ <b>12GB per worker</b>. Any 16GB+ card works.</li>
+    <li>One 5090: ~1,400 scenes/hour. One 3080: ~700. One 4090: ~900.</li>
+    <li><b>8× 4090 beats 1× H100 for batch generation</b> — and costs less per image.</li>
+    <li>Batch smart: group jobs by LoRA so the model stays hot (my fleet went 3× faster with this one trick).</li>
+  </ul>
+  <p style="margin-top:14px">Real numbers: <b>30,000 scenes in 5 hours for ~$27.</b></p>
+  <img class="shot" src="shots/gallery.png" alt="Scene generation gallery">
+  <div class="cap">The actual scene pipeline mid-run — thousands of character-consistent scenes generated on an 8-GPU fleet.</div>
+</div>
+
+<!-- 8. TRAINING -->
+<div class="slide">
+  <div class="kicker">Use Case</div>
+  <h2>Training LoRAs: VRAM is the wall</h2>
+  <ul>
+    <li>SDXL LoRA training: <b>24GB works, 40GB is comfortable, 80GB is luxurious.</b></li>
+    <li>8× A100 40GB trained 246 character LoRAs at ~21 min each, 16/hour across the fleet.</li>
+    <li>Consumer cards (3090/4090) train fine at 24GB — just slower per job.</li>
+    <li><b>Training is a burst job.</b> Rent big, finish, destroy. Never own training hardware unless you train weekly.</li>
+  </ul>
+</div>
+
+<!-- 9. BATCH JOBS -->
+<div class="slide">
+  <div class="kicker">Operations</div>
+  <h2>Batch jobs that don't die at 3am</h2>
+  <div class="grid2">
+    <div class="card"><h3>Structure</h3><p>One worker per GPU, one game/dataset per worker. Simple resumable jobs: <b>skip what's already done</b>, write metadata as you go, log everything.</p></div>
+    <div class="card"><h3>Watchdog</h3><p>A tiny script that checks: one master alive, no duplicate workers, GPU util healthy. <b>Restart what dies.</b> My fleet self-heals via cron every 15 min.</p></div>
+    <div class="card"><h3>Lock files</h3><p><code>flock -n</code> prevents duplicate masters. I once ran 3 trainers on 4 GPUs at ⅓ speed for hours. Never again.</p></div>
+    <div class="card"><h3>Sync out continuously</h3><p>rsync results home every 60s. If the host dies (it will), you lose <b>seconds</b>, not hours.</p></div>
+  </div>
+</div>
+
+<!-- 10. RELIABILITY -->
+<div class="slide">
+  <div class="kicker">Operations</div>
+  <h2>Hosts die. Plan for it.</h2>
+  <ul>
+    <li><b>Reliability % is the most important number on the listing.</b> 93% means your 8-hour job dies at hour 5. 99.9% costs 10% more and saves the whole job.</li>
+    <li><b>Kill-and-retry is a feature, not a failure.</b> Every long job I run is resumable by design. New host, rerun the script, it skips finished work.</li>
+    <li><b>Provisioning hangs happen.</b> If a template download stalls 30+ minutes, kill the download process — provisioning usually completes anyway.</li>
+    <li><b>Some hosts can't reach HuggingFace.</b> Test on arrival: <code>curl huggingface.co</code>. No reach? Move the data from a host that can.</li>
+  </ul>
+</div>
+
+<!-- 11. RENT VS BUY -->
+<div class="slide">
+  <div class="kicker">The Money</div>
+  <h2>When to rent, when to buy</h2>
+  <table>
+    <tr><th>Rule</th><th>Decision</th></tr>
+    <tr><td>Breakeven on a 5090 ($2,500)</td><td><b>~6 months of 24/7 rental.</b> Under that → rent. Over → buy.</td></tr>
+    <tr><td>Burst jobs (training, batch gen)</td><td><b>Always rent.</b> Pay $50 for a weekend, not $2,500 forever.</td></tr>
+    <tr><td>Always-on production (your game server)</td><td><b>Buy when revenue covers it.</b> One 5090 at home beats $1,000/month rent.</td></tr>
+    <tr><td>Unproven ideas</td><td><b>Always rent.</b> Prove it earns before you own it.</td></tr>
+  </table>
+  <p style="margin-top:18px">My rule: <b>rent until the workload is permanent, predictable, and profitable.</b> Then buy exactly one card for it.</p>
+</div>
+
+<!-- 12. WHAT TO KEEP -->
+<div class="slide">
+  <div class="kicker">Asset Discipline</div>
+  <h2>What you keep forever<br>(it's never the hardware)</h2>
+  <ul>
+    <li><b>Models and LoRAs</b> — your trained assets. Three copies: local, NAS, cloud. Hardware dies; these are the business.</li>
+    <li><b>Pipelines as code</b> — every script, every config, every watchdog. Rebuild any host in an hour.</li>
+    <li><b>Metadata</b> — which prompt made which image. Regeneration without it means starting over.</li>
+    <li><b>Nothing on the instance.</b> Treat every host as temporary. If it matters, it's synced off within 60 seconds.</li>
+  </ul>
+</div>
+
+<!-- 13. HIGGSFIELD COMPARISON -->
+<div class="slide">
+  <div class="kicker">The Alternative</div>
+  <h2>"But Higgsfield does it for me"</h2>
+  <ul>
+    <li>Video clip on a rented 5090 (LTX-Video, ComfyUI): <b>~$0.02-0.05 each</b>, any style, any character, yours forever.</li>
+    <li>Subscription platforms: fixed styles, watermarks, credit limits, and <b>you build their moat, not yours.</b></li>
+    <li>The skills in this course transfer to <b>every AI workload</b> — not just one vendor's app.</li>
+  </ul>
+  <div class="shots">
+    <div><img src="shots/scene_cyber.png" alt="Cyberpunk scene"><div class="cap">LoRA-locked character in a story scene — generated for fractions of a cent.</div></div>
+    <div><img src="shots/scene_fantasy.png" alt="Fantasy scene"><div class="cap">Dark fantasy world scene from the same pipeline.</div></div>
+  </div>
+  <p class="big" style="margin-top:18px">Rent the <span class="accent">hardware</span>, own the <span class="accent">pipeline</span>.</p>
+</div>
+
+<!-- 14. CHEAT SHEET -->
+<div class="slide">
+  <div class="kicker">Take This With You</div>
+  <h2>The whole course in 6 lines</h2>
+  <ul>
+    <li><b>VRAM decides if it works. Bandwidth decides how fast.</b></li>
+    <li><b>Batch jobs: many cheap cards &gt; one big card.</b></li>
+    <li><b>Check reliability + network before the GPU name.</b></li>
+    <li><b>Make every job resumable. Hosts die.</b></li>
+    <li><b>Rent bursts. Buy only permanent, profitable workloads.</b></li>
+    <li><b>Own the models, the pipeline, and the metadata. Never the host.</b></li>
+  </ul>
+</div>
+
+<div class="nav"><b>←</b> <b>→</b> arrow keys · <span id="pos"></span></div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let i = 0;
+function show(n) {
+  i = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, k) => s.classList.toggle('active', k === i));
+  document.getElementById('pos').textContent = (i + 1) + ' / ' + slides.length;
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') show(i + 1);
+  if (e.key === 'ArrowLeft') show(i - 1);
+});
+document.addEventListener('click', () => show(i + 1));
+show(0);
+</script>
+</body>
+</html>
