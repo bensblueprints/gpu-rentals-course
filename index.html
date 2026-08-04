@@ -50,6 +50,8 @@ td:first-child { color: var(--text); font-weight: 600; }
 .cols { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 28px; align-items: center; max-width: 1150px; }
 @media (max-width: 800px) { .cols { grid-template-columns: 1fr; } }
 code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; color: var(--accent2); font-size: 0.92em; }
+a { color: var(--accent2); text-decoration: none; }
+a:hover { color: var(--accent); text-decoration: underline; }
 pre { background: #07080d; border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; padding: 16px 20px; max-width: 980px; margin: 10px 0; overflow-x: auto; }
 pre code { color: #c8d3e0; font-size: clamp(11px, 1.05vw, 15px); line-height: 1.5; }
 kbd { background: var(--surface2); border: 1px solid rgba(255,255,255,0.15); border-radius: 5px; padding: 1px 7px; font-family: inherit; font-size: 0.85em; color: var(--text); }
@@ -263,7 +265,7 @@ body.notes-on #notesPanel { display: block; }
   <h2>Where you rent changes what you get</h2>
   <table>
     <tr><th>Type</th><th>Examples</th><th>Price</th><th>Trade-off</th></tr>
-    <tr><td>Community cloud</td><td>Vast.ai, RunPod community</td><td><b>Cheapest</b> (often 2-3× less)</td><td>Consumer hardware in someone's rack; reliability varies — that's what this course's ops section is for</td></tr>
+    <tr><td>Community cloud</td><td><a href="https://cloud.vast.ai/?ref_id=523483" target="_blank" rel="noopener">Vast.ai</a>, RunPod community</td><td><b>Cheapest</b> (often 2-3× less)</td><td>Consumer hardware in someone's rack; reliability varies — that's what this course's ops section is for</td></tr>
     <tr><td>Secure cloud</td><td>RunPod secure, Lambda, TensorDock</td><td>Mid</td><td>Datacenter-grade, better uptime, still pay-per-hour</td></tr>
     <tr><td>Hyperscalers</td><td>AWS, GCP, Azure</td><td><b>Most expensive</b></td><td>Enterprise compliance and quotas — overkill for most indie workloads</td></tr>
   </table>
@@ -669,10 +671,12 @@ while true; do rsync -az out/ home:results/; sleep 60; done</code></pre>
     <li><b>Run the 60-second listing check</b>, rent the sweet-spot card, and time how long setup actually takes.</li>
     <li><b>Make the job resumable before you make it fast.</b> Then let it run overnight.</li>
   </ul>
-  <p class="big" style="margin-top:22px">See it running live: <span class="accent">nighttalegames.com</span> — 15 games, 246 models, 30k+ scenes, all on this playbook.</p>
+  <p class="big" style="margin-top:22px">Start here: <a class="accent" href="https://cloud.vast.ai/?ref_id=523483" target="_blank" rel="noopener">cloud.vast.ai</a> — run the 60-second check, rent one card, run one job overnight.</p>
+  <p style="margin-top:14px">See it running live: <span class="accent">nighttalegames.com</span> — 15 games, 246 models, 30k+ scenes, all on this playbook.</p>
   <aside class="notes">
     <p>End on action, not summary: <em>homework is one rental, one job, one overnight run.</em> The course material only becomes skill at the moment a real job survives the night.</p>
     <p>Point at the NightTale URL as the existence proof: everything in the deck is running in production right now, built by the same playbook they're holding.</p>
+    <p>Point at the vast.ai link when giving the homework — <em>it's your referral link;</em> it's also genuinely the cheapest place for their first rental.</p>
     <p>Leave time for questions — the most common ones are covered: pricing drift (slide 7), bigger models (slide 14), scaling past 10 hosts (slide 22).</p>
   </aside>
 </div>
