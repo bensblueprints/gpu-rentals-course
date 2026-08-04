@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The GPU Rental Cheat Sheet — NightTale</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c12; --surface: #12151d; --surface2: #181c26;
+  --text: #ece7dd; --muted: #8b8fa3; --accent: #e8b64c; --accent2: #00e5ff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.55; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 40px 28px 60px; }
+.head { border-bottom: 2px solid var(--accent); padding-bottom: 18px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+h1 { font-family: 'Fraunces', serif; font-size: 34px; letter-spacing: -0.5px; }
+h1 span { color: var(--accent); }
+.head .tag { color: var(--muted); font-size: 13px; }
+h2 { font-family: 'Fraunces', serif; font-size: 21px; color: var(--accent); margin: 30px 0 12px; }
+p, li { font-size: 14.5px; color: var(--muted); }
+b, strong { color: var(--text); }
+ul { padding-left: 1.2em; }
+li { margin-bottom: 5px; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0 4px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 13.5px; }
+th { color: var(--accent); }
+td { color: var(--muted); }
+td:first-child { color: var(--text); font-weight: 600; }
+.rule { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 18px; margin: 14px 0; font-size: 15px; color: var(--text); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.foot { margin-top: 36px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.foot a { color: var(--accent2); text-decoration: none; }
+.dlbar { position: sticky; top: 0; background: var(--surface2); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 0; text-align: center; font-size: 14px; z-index: 10; }
+.dlbar a { color: var(--accent); font-weight: 700; text-decoration: none; margin: 0 12px; }
+@media print {
+  .dlbar { display: none; }
+  body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .wrap { padding: 24px 20px; }
+  h2 { margin: 20px 0 8px; }
+  @page { size: A4; margin: 10mm; }
+}
+@media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="dlbar">Reading online? <a href="gpu-rental-cheat-sheet.pdf" download>Download the PDF</a> · <a href="./">Get it by email</a> · <a href="../">Full free course</a></div>
+<div class="wrap">
+
+  <div class="head">
+    <h1>The GPU Rental <span>Cheat Sheet</span></h1>
+    <div class="tag">NightTale · nighttalegames.com</div>
+  </div>
+
+  <div class="rule">VRAM decides if it works. Bandwidth decides how fast. Disk decides how often you wait.</div>
+
+  <h2>1 · What you need for what</h2>
+  <table>
+    <tr><th>Job</th><th>Minimum</th><th>Sweet spot</th><th>Speed driver</th></tr>
+    <tr><td>LLM chat / story text</td><td>16GB (8B)</td><td>24GB (14B 4-bit)</td><td>Memory bandwidth</td></tr>
+    <tr><td>Image generation (SDXL)</td><td>16GB</td><td>24-32GB</td><td>GPU cores + more cards</td></tr>
+    <tr><td>LoRA training</td><td>24GB</td><td>40-80GB</td><td>VRAM size</td></tr>
+    <tr><td>Video generation</td><td>24GB</td><td>32-80GB</td><td>VRAM + architecture</td></tr>
+    <tr><td>TTS / voice cloning</td><td>8GB (CPU ok)</td><td>16GB</td><td>Small models, cheap</td></tr>
+  </table>
+  <p style="margin-top:6px">Golden rule: <b>for batch work, 8 cheap cards beat 1 expensive card.</b></p>
+
+  <h2>2 · The rental lineup</h2>
+  <table>
+    <tr><th>Card</th><th>VRAM</th><th>Bandwidth</th><th>Typical $/hr</th><th>Best for</th></tr>
+    <tr><td>RTX 3090</td><td>24GB</td><td>~940 GB/s</td><td>$0.15-0.30</td><td>Cheap workers, 14B LLM serving</td></tr>
+    <tr><td>RTX 4090</td><td>24GB</td><td>~1,000 GB/s</td><td>$0.30-0.55</td><td>Fleet workhorse: images, LoRAs</td></tr>
+    <tr><td>RTX 5090</td><td>32GB</td><td>~1,800 GB/s</td><td>$0.50-0.90</td><td>32B LLMs, video gen</td></tr>
+    <tr><td>A100 40/80GB</td><td>40/80GB</td><td>1.6-2 TB/s</td><td>$0.80-1.60</td><td>Training fleets, big models</td></tr>
+    <tr><td>H100</td><td>80GB</td><td>~3.3 TB/s</td><td>$2.00-4.00</td><td>Serious training only</td></tr>
+  </table>
+
+  <h2>3 · The 60-second listing check</h2>
+  <ul>
+    <li><b>VRAM ≥ model + headroom</b> (weights + KV cache + engine + ~4GB margin).</li>
+    <li><b>Reliability ≥ 98%</b> — below that, expect the host to die mid-job.</li>
+    <li><b>Network listed in Mbps</b> — no number shown = assume it's bad. (Same platform: 60 vs 6,783 Mbps.)</li>
+    <li><b>Region matches your data</b> — cross-continent transfers run at ~1 MB/s.</li>
+    <li><b>RAM ≥ 2× VRAM, disk ≥ dataset + outputs.</b></li>
+    <li><b>Fleet check</b> — would N cheaper cards beat this one for this job?</li>
+  </ul>
+
+  <div class="cols">
+    <div>
+      <h2>4 · Sizing an LLM server</h2>
+      <table>
+        <tr><th>Line item</th><th>VRAM</th></tr>
+        <tr><td>14B model, AWQ 4-bit</td><td>~10GB</td></tr>
+        <tr><td>KV cache (30 players)</td><td>~3-5GB</td></tr>
+        <tr><td>vLLM engine</td><td>~2GB</td></tr>
+        <tr><td>Safety margin</td><td>~4GB</td></tr>
+        <tr><td><b>Total → 24GB card</b></td><td><b>~20GB</b></td></tr>
+      </table>
+      <p style="margin-top:6px">One 3090 at <b>$0.25/hr</b> + vLLM batching serves <b>1,000+ active players</b>.</p>
+    </div>
+    <div>
+      <h2>5 · What it actually costs</h2>
+      <table>
+        <tr><th>Project</th><th>Unit cost</th></tr>
+        <tr><td>30,000 game scenes (8×4090, 5h)</td><td><b>$0.0009/scene</b></td></tr>
+        <tr><td>246 character LoRAs (8×A100, ~15h)</td><td><b>&lt;$0.50/model</b></td></tr>
+        <tr><td>LLM story server (3090, 24/7)</td><td><b>~$180/mo</b></td></tr>
+        <tr><td>Ad video clips (5090, ComfyUI)</td><td><b>$0.02-0.05/clip</b></td></tr>
+      </table>
+      <p style="margin-top:6px">Breakeven on a $2,500 card: <b>~6 months of 24/7 rent.</b> Under → rent. Over → buy.</p>
+    </div>
+  </div>
+
+  <h2>6 · Operations in four lines</h2>
+  <ul>
+    <li><b>flock -n</b> — one master, ever. No duplicate workers.</li>
+    <li><b>Skip finished work</b> — every job resumable; rerunning is always safe.</li>
+    <li><b>Watchdog via cron every 15 min</b> — restart what dies.</li>
+    <li><b>rsync out every 60s</b> — hosts die; you lose seconds, not hours.</li>
+  </ul>
+
+  <div class="rule">Rent the hardware. Own the models, the pipeline, and the metadata — never the host.</div>
+
+  <div class="foot">
+    <div>© NightTale — built with this exact playbook: 15 games, 246 models, 30k+ scenes.</div>
+    <div><a href="../">Take the full free course →</a></div>
+  </div>
+
+</div>
+</body>
+</html>
